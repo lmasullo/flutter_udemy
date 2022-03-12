@@ -24,9 +24,18 @@ class MyApp extends StatefulWidget {
 // This class is persistent state of the app
 class _MyAppState extends State<MyApp> {
   var questions = [
-    'What is your favorite color?',
-    'What is your favorite animal?',
-    'Third item?'
+    {
+      'questionText': 'What is your favorite color?',
+      'answers': ['Black', 'Red', 'Green', 'White']
+    },
+    {
+      'questionText': 'What is your favorite animal?',
+      'answers': ['Rabbit', 'Snake', 'Elephant', 'Lion']
+    },
+    {
+      'questionText': 'What is your favorite food?',
+      'answers': ['Pizza', 'Pasta', 'Sushi', 'Tacos']
+    },
   ];
 
   var questionIndex = 0;
@@ -53,14 +62,21 @@ class _MyAppState extends State<MyApp> {
         ),
         body: Column(
           children: [
-            // I'm referecing the Question class here from the question.dart file
-            Question(questions[questionIndex]),
+            // I'm referencing the Question class here from the question.dart file
+            Question(
+              questions[questionIndex]['questionText'] as String,
+            ),
+            ...(questions[questionIndex]['answers'] as List<String>)
+                .map((answer) {
+              return Answer(answerQuestion, answer);
+            }).toList(),
+
             // Text(questions[1]),
-            Answer(answerQuestion),
-            RaisedButton(
-                child: const Text('Answer 2'), onPressed: (answerQuestion)),
-            RaisedButton(
-                child: const Text('Answer 3'), onPressed: (answerQuestion)),
+            // Answer(answerQuestion),
+            // RaisedButton(
+            //     child: const Text('Answer 2'), onPressed: (answerQuestion)),
+            // RaisedButton(
+            //     child: const Text('Answer 3'), onPressed: (answerQuestion)),
           ],
         ),
       ),
