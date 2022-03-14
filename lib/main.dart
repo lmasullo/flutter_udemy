@@ -23,7 +23,7 @@ class MyApp extends StatefulWidget {
 
 // This class is persistent state of the app
 class _MyAppState extends State<MyApp> {
-  var questions = [
+  final questions = const [
     {
       'questionText': 'What is your favorite color?',
       'answers': ['Black', 'Red', 'Green', 'White']
@@ -45,12 +45,17 @@ class _MyAppState extends State<MyApp> {
     // Set state will trigger the build method that rebuilds the UI widget tree
     setState(() {
       questionIndex = questionIndex + 1;
-      if (questionIndex == questions.length) {
-        questionIndex = 0;
-      }
+      // if (questionIndex == questions.length) {
+      //   questionIndex = 0;
+      // }
     });
 
     print(questionIndex);
+  }
+
+  restart() {
+    print('restart');
+    questionIndex = 0;
   }
 
   @override
@@ -60,25 +65,27 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: const Text('Revive IV'),
         ),
-        body: Column(
-          children: [
-            // I'm referencing the Question class here from the question.dart file
-            Question(
-              questions[questionIndex]['questionText'] as String,
-            ),
-            ...(questions[questionIndex]['answers'] as List<String>)
-                .map((answer) {
-              return Answer(answerQuestion, answer);
-            }).toList(),
-
-            // Text(questions[1]),
-            // Answer(answerQuestion),
-            // RaisedButton(
-            //     child: const Text('Answer 2'), onPressed: (answerQuestion)),
-            // RaisedButton(
-            //     child: const Text('Answer 3'), onPressed: (answerQuestion)),
-          ],
-        ),
+        body: questionIndex < questions.length || questionIndex == 0
+            ? Column(
+                children: [
+                  // I'm referencing the Question class here from the question.dart file
+                  Question(
+                    questions[questionIndex]['questionText'] as String,
+                  ),
+                  ...(questions[questionIndex]['answers'] as List<String>)
+                      .map((answer) {
+                    return Answer(answerQuestion, answer);
+                  }).toList(),
+                ],
+              )
+            : Center(
+                child: RaisedButton(
+                  child: Text('You did it!, Restart'),
+                  onPressed: restart,
+                  color: Colors.blue,
+                  textColor: Colors.white,
+                ),
+              ),
       ),
     );
   }
